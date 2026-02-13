@@ -1,17 +1,33 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import java.util.Scanner;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+class SistemaReservaArena {
+
+    public void fazerReserva(String nomeCliente, String nomeArena, String tipoPagamento) {
+        System.out.println("\n=== PROCESSANDO RESERVA ===");
+        System.out.println("Cliente: " + nomeCliente);
+        System.out.println("Arena: " + nomeArena);
+
+        if (tipoPagamento.equalsIgnoreCase("PIX")) {
+            System.out.println("💰 Pago via PIX - R$ 100");
+        } else if (tipoPagamento.equalsIgnoreCase("CARTAO")) {
+            System.out.println("💳 Pago via Cartão - R$ 100");
+        } else if (tipoPagamento.equalsIgnoreCase("DINHEIRO")) {
+            System.out.println("💵 Pago em Dinheiro - R$ 100");
+        } else {
+            System.out.println("❌ Forma de pagamento inválida!");
         }
+
+        System.out.println("📧 Email enviado para " + nomeCliente);
+        System.out.println("💾 Salvo no banco de dados (Simulado)");
+    }
+}
+
+class ArenaVIP extends SistemaReservaArena {
+    @Override
+    public void fazerReserva(String nome, String arena, String pagamento) {
+        System.out.println("\n--- [ERRO DE NEGÓCIO] ---");
+        System.out.println("❌ O cliente " + nome + " tentou reservar, mas VIP não faz reserva normal!");
     }
 }
