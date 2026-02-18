@@ -10,7 +10,7 @@ public class MemoryReservaRepository{
 
     public Reserva criarReserva(Reserva reserva)throws SQLException{
         String query = """
-                INSERT INTO Reserva (nome, email, telefone, valorTotal;)
+                INSERT INTO Reserva (nome, email, telefone, valorTotal)
                 VALUES (?,?,?,?)
                 """;
         try (Connection conn = Conexao.conectar();
