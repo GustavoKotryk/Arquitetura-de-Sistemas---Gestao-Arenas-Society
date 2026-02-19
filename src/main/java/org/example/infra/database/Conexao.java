@@ -5,11 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexao {
-    public static final String URL = "teste";
-    public static final String USER = "teste";
-    public static final String PASSWORD = "teste";
 
-    public static Connection conectar()throws SQLException{
+    public static final String URL = "jdbc:mysql://yamanote.proxy.rlwy.net:25133/railway";
+    public static final String USER = "root";
+    public static final String PASSWORD = "mkYfwmhDZVDKSQikoXfWMveClnbAiMWD";
+
+    public static Connection conectar() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
