@@ -1,14 +1,17 @@
 package org.example.service;
 
 import org.example.domain.Reserva;
-import org.example.infra.repository.MemoryReservaRepository;
+import org.example.infra.repository.SqlReservaRepository;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class ReservaServiceImpl implements ReservaService {
 
-    MemoryReservaRepository reservaRepository = new MemoryReservaRepository();
+
+    private final
+
+    SqlReservaRepository reservaRepository = new SqlReservaRepository();
 
     @Override
     public Reserva criarReserva(Reserva reserva) throws SQLException {
