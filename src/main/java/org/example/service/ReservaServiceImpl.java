@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.domain.IReservaRepository;
 import org.example.domain.Reserva;
 import org.example.infra.repository.SqlReservaRepository;
 
@@ -9,32 +10,34 @@ import java.util.List;
 public class ReservaServiceImpl implements ReservaService {
 
 
-    private final
+    private final IReservaRepository reservaRepository;
 
-    SqlReservaRepository reservaRepository = new SqlReservaRepository();
+    public ReservaServiceImpl(IReservaRepository reservaRepository) {
+        this.reservaRepository = reservaRepository;
+    }
 
     @Override
     public Reserva criarReserva(Reserva reserva) throws SQLException {
-        return null;
+        return reservaRepository.criarReserva(reserva);
     }
 
     @Override
     public Reserva buscarPorId(int id) throws SQLException {
-        return null;
+        return reservaRepository.buscarPorId(id);
     }
 
     @Override
     public List<Reserva> buscarReserva(int id) throws SQLException {
-        return List.of();
+        return reservaRepository.buscarTodas();
     }
 
     @Override
     public void atualizarReserva(Reserva reserva) throws SQLException {
-
+    reservaRepository.atualizar(reserva);
     }
 
     @Override
     public void deletarReserva(int id) throws SQLException {
-
+    reservaRepository.deletar(id);
     }
 }
