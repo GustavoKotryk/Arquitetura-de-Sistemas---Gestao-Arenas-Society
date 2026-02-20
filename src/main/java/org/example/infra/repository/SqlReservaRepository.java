@@ -14,7 +14,6 @@ public class SqlReservaRepository implements IReservaRepository {
 
     @Override
     public Reserva salvar(Reserva reserva) throws SQLException {
-        // Adaptado para as colunas que existem: id, nome, email, telefone, valorTotal
         String query = """
                 INSERT INTO Reserva (nome, email, telefone, valorTotal)
                 VALUES (?, ?, ?, ?)
@@ -90,16 +89,15 @@ public class SqlReservaRepository implements IReservaRepository {
     }
 
     private Reserva mapResultSetToReserva(ResultSet rs) throws SQLException {
-        // Como não temos dataHora e duracaoHoras no banco, usamos valores padrão
         Reserva reserva = new Reserva(
-                rs.getString("nome"),           // nome
-                rs.getString("telefone"),       // telefone
-                LocalDateTime.now(),            // dataHora padrão (hoje)
-                1                                // duracaoHoras padrão (1 hora)
+                rs.getString("nome"),
+                rs.getString("telefone"),
+                LocalDateTime.now(),
+                1
         );
         reserva.setId(rs.getLong("id"));
         reserva.setPrecoTotal(rs.getDouble("valorTotal"));
-        reserva.setStatus(Reserva.StatusReserva.PENDENTE); // status padrão
+        reserva.setStatus(Reserva.StatusReserva.PENDENTE);
         return reserva;
     }
 }
