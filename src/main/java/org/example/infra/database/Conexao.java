@@ -15,7 +15,7 @@ public class Conexao {
     }
 
     public static void testarConexao() {
-        System.out.println("🔍 Testando conexão com o banco de dados...");
+        System.out.println("Testando conexão com o banco de dados...");
         System.out.println("URL: " + URL);
         System.out.println("Usuário: " + USER);
 

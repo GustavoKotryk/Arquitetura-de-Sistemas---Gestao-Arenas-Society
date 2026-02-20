@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class TesteConexao {
     public static void main(String[] args) {
-        System.out.println("🔍 TESTANDO CONEXÃO COM O BANCO NA NUVEM\n");
+        System.out.println("TESTANDO CONEXÃO COM O BANCO NA NUVEM\n");
 
 
         Conexao.testarConexao();

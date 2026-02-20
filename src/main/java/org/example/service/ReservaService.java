@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.domain.*;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,24 +18,26 @@ public class ReservaService {
 
     public Reserva criarReserva(String clienteNome, String clienteTelefone,
                                 LocalDateTime dataHora, int duracaoHoras) {
-        definirStrategy(dataHora);
-
-        double preco = strategy.calcularPreco(dataHora, duracaoHoras);
-
-        Reserva reserva = new Reserva(clienteNome, clienteTelefone, dataHora, duracaoHoras);
-        reserva.setPrecoTotal(preco);
-
         try {
+            definirStrategy(dataHora);
+
+            double preco = strategy.calcularPreco(dataHora, duracaoHoras);
+
+            Reserva reserva = new Reserva(clienteNome, clienteTelefone, dataHora, duracaoHoras);
+            reserva.setPrecoTotal(preco);
+
             Reserva salva = repository.salvar(reserva);
             notificacaoService.enviarConfirmacao(salva);
             return salva;
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar reserva: " + e.getMessage());
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao salvar reserva no banco de dados: " + e.getMessage(), e);
         }
     }
 
     private void definirStrategy(LocalDateTime dataHora) {
         int hora = dataHora.getHour();
+        // Horário de pico: 18h às 6h (noite/madrugada)
         if (hora >= 18 || hora <= 6) {
             this.strategy = new org.example.infra.strategies.PrecoHorarioPicoStrategy();
         } else {
@@ -45,23 +48,28 @@ public class ReservaService {
     public List<Reserva> listarReservas() {
         try {
             return repository.listarTodas();
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao listar reservas: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar reservas do banco de dados: " + e.getMessage(), e);
         }
     }
 
     public void cancelarReserva(Long id) {
         try {
-            repository.buscarPorId(id).ifPresent(reserva -> {
-                try {
-                    repository.remover(id);
-                    notificacaoService.enviarCancelamento(reserva);
-                } catch (Exception e) {
-                    throw new RuntimeException("Erro ao cancelar reserva: " + e.getMessage());
-                }
-            });
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar reserva para cancelamento: " + e.getMessage());
+            repository.buscarPorId(id).ifPresentOrElse(
+                    reserva -> {
+                        try {
+                            repository.remover(id);
+                            notificacaoService.enviarCancelamento(reserva);
+                        } catch (SQLException e) {
+                            throw new RuntimeException("Erro ao remover reserva: " + e.getMessage(), e);
+                        }
+                    },
+                    () -> {
+                        throw new RuntimeException("Reserva não encontrada com ID: " + id);
+                    }
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar reserva para cancelamento: " + e.getMessage(), e);
         }
     }
 
@@ -69,8 +77,8 @@ public class ReservaService {
         try {
             return repository.buscarPorId(id)
                     .orElseThrow(() -> new RuntimeException("Reserva não encontrada com ID: " + id));
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar reserva: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar reserva no banco de dados: " + e.getMessage(), e);
         }
     }
 }
