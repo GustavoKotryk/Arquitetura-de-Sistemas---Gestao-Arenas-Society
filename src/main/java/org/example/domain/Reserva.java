@@ -11,7 +11,7 @@ public class Reserva {
     private double precoTotal;
     private StatusReserva status;
 
-    // Construtores
+    
     public Reserva() {}
 
     public Reserva(String clienteNome, String clienteTelefone,
@@ -23,7 +23,64 @@ public class Reserva {
         this.status = StatusReserva.PENDENTE;
     }
 
-    // Getters e Setters (gerar todos)
+    public Reserva(int id, String nome, String email, String telefone, double valorTotal) {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getClienteNome() {
+        return clienteNome;
+    }
+
+    public void setClienteNome(String clienteNome) {
+        this.clienteNome = clienteNome;
+    }
+
+    public String getClienteTelefone() {
+        return clienteTelefone;
+    }
+
+    public void setClienteTelefone(String clienteTelefone) {
+        this.clienteTelefone = clienteTelefone;
+    }
+
+    public LocalDateTime getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public int getDuracaoHoras() {
+        return duracaoHoras;
+    }
+
+    public void setDuracaoHoras(int duracaoHoras) {
+        this.duracaoHoras = duracaoHoras;
+    }
+
+    public double getPrecoTotal() {
+        return precoTotal;
+    }
+
+    public void setPrecoTotal(double precoTotal) {
+        this.precoTotal = precoTotal;
+    }
+
+    public StatusReserva getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusReserva status) {
+        this.status = status;
+    }
 
     public enum StatusReserva {
         PENDENTE, CONFIRMADA, CANCELADA, FINALIZADA

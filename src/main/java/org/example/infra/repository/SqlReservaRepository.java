@@ -5,118 +5,101 @@ import org.example.domain.Reserva;
 import org.example.infra.database.Conexao;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SqlReservaRepository implements IReservaRepository {
 
-
     @Override
-    public Reserva criarReserva(Reserva reserva) throws SQLException {
+    public Reserva salvar(Reserva reserva) throws SQLException {
         String query = """
-                INSERT INTO Reserva (nome, email, telefone, valorTotal)
-                VALUES (?,?,?,?)
+                INSERT INTO Reserva (clienteNome, clienteTelefone, dataHora, duracaoHoras, precoTotal, status)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """;
         try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
-            stmt.setString(1, reserva.getNome());
-            stmt.setString(2, reserva.getEmail());
-            stmt.setString(3, reserva.getTelefone());
-            stmt.setDouble(4, reserva.getValorTotal());
+             PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setString(1, reserva.getClienteNome());
+            stmt.setString(2, reserva.getClienteTelefone());
+            stmt.setTimestamp(3, Timestamp.valueOf(reserva.getDataHora()));
+            stmt.setInt(4, reserva.getDuracaoHoras());
+            stmt.setDouble(5, reserva.getPrecoTotal());
+            stmt.setString(6, reserva.getStatus().name());
+
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
-
-            if (rs.next()){
-                reserva.setId(rs.getInt(1));
+            if (rs.next()) {
+                reserva.setId(rs.getLong(1));
             }
         }
         return reserva;
     }
 
-
     @Override
-    public Reserva buscarPorId(int id) throws SQLException {
+    public Optional<Reserva> buscarPorId(Long id) throws SQLException {
         String query = """
-                SELECT id, nome, email, telefone, valorTotal
+                SELECT id, clienteNome, clienteTelefone, dataHora, duracaoHoras, precoTotal, status
                 FROM Reserva
                 WHERE id = ?
                 """;
-        try (Connection conn = Conexao.conectar();) {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setInt(1, id);
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
+            stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()){
-                return new Reserva(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("email"),
-                        rs.getString("telefone"),
-                        rs.getDouble("valorTotal")
-                );}
+
+            if (rs.next()) {
+                return Optional.of(mapResultSetToReserva(rs));
+            }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public List<Reserva> buscarTodas() throws SQLException {
+    public List<Reserva> listarTodas() throws SQLException {
         List<Reserva> reservas = new ArrayList<>();
-
         String query = """
-                SELECT id, nome, email, telefone, valorTotal
-                FROM Reserva 
+                SELECT id, clienteNome, clienteTelefone, dataHora, duracaoHoras, precoTotal, status
+                FROM Reserva
                 """;
-        try (Connection conn = Conexao.conectar();){
-            PreparedStatement stmt = conn.prepareStatement(query);
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
 
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()){
-                int id = rs.getInt("id");
-                String nome = rs.getString("nome");
-                String email = rs.getString("email");
-                String telefone = rs.getString("telefone");
-                double valorTotal = rs.getDouble("valorTotal");
-                reservas.add(new Reserva(id, nome, email, telefone, valorTotal));
+            while (rs.next()) {
+                reservas.add(mapResultSetToReserva(rs));
             }
         }
         return reservas;
     }
 
     @Override
-    public void atualizar(Reserva reserva) throws SQLException {
+    public void remover(Long id) throws SQLException {
         String query = """
-                UPDATE Reserva
-                SET nome =?, email= ?, telefone = ?, valorTotal = ?
+                DELETE FROM Reserva
                 WHERE id = ?
                 """;
         try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(query)){
-            stmt.setString(1, reserva.getNome());
-            stmt.setString(2, reserva.getEmail());
-            stmt.setString(3, reserva.getTelefone());
-            stmt.setDouble(4, reserva.getValorTotal());
-            stmt.setInt(5, reserva.getId());
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
+            stmt.setLong(1, id);
             stmt.executeUpdate();
         }
     }
 
-    @Override
-    public void deletar(int id) throws SQLException {
-        String query = """
-                DELETE FROM Reserva
-                WHERE id =?
-                """;
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(query)){
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        }
+    private Reserva mapResultSetToReserva(ResultSet rs) throws SQLException {
+        Reserva reserva = new Reserva(
+                rs.getString("clienteNome"),
+                rs.getString("clienteTelefone"),
+                rs.getTimestamp("dataHora").toLocalDateTime(),
+                rs.getInt("duracaoHoras")
+        );
+        reserva.setId(rs.getLong("id"));
+        reserva.setPrecoTotal(rs.getDouble("precoTotal"));
+        reserva.setStatus(Reserva.StatusReserva.valueOf(rs.getString("status")));
+        return reserva;
     }
-
-
-
 }
