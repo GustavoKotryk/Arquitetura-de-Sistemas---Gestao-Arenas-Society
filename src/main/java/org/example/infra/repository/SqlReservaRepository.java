@@ -14,19 +14,18 @@ public class SqlReservaRepository implements IReservaRepository {
 
     @Override
     public Reserva salvar(Reserva reserva) throws SQLException {
+        // Adaptado para as colunas que existem: id, nome, email, telefone, valorTotal
         String query = """
-                INSERT INTO Reserva (clienteNome, clienteTelefone, dataHora, duracaoHoras, precoTotal, status)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO Reserva (nome, email, telefone, valorTotal)
+                VALUES (?, ?, ?, ?)
                 """;
         try (Connection conn = Conexao.conectar();
              PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, reserva.getClienteNome());
-            stmt.setString(2, reserva.getClienteTelefone());
-            stmt.setTimestamp(3, Timestamp.valueOf(reserva.getDataHora()));
-            stmt.setInt(4, reserva.getDuracaoHoras());
-            stmt.setDouble(5, reserva.getPrecoTotal());
-            stmt.setString(6, reserva.getStatus().name());
+            stmt.setString(1, reserva.getClienteNome());     // nome
+            stmt.setString(2, "email@exemplo.com");          // email (ajustar depois)
+            stmt.setString(3, reserva.getClienteTelefone()); // telefone
+            stmt.setDouble(4, reserva.getPrecoTotal());      // valorTotal
 
             stmt.executeUpdate();
 
@@ -41,7 +40,7 @@ public class SqlReservaRepository implements IReservaRepository {
     @Override
     public Optional<Reserva> buscarPorId(Long id) throws SQLException {
         String query = """
-                SELECT id, clienteNome, clienteTelefone, dataHora, duracaoHoras, precoTotal, status
+                SELECT id, nome, telefone, valorTotal
                 FROM Reserva
                 WHERE id = ?
                 """;
@@ -62,7 +61,7 @@ public class SqlReservaRepository implements IReservaRepository {
     public List<Reserva> listarTodas() throws SQLException {
         List<Reserva> reservas = new ArrayList<>();
         String query = """
-                SELECT id, clienteNome, clienteTelefone, dataHora, duracaoHoras, precoTotal, status
+                SELECT id, nome, telefone, valorTotal
                 FROM Reserva
                 """;
         try (Connection conn = Conexao.conectar();
@@ -91,15 +90,16 @@ public class SqlReservaRepository implements IReservaRepository {
     }
 
     private Reserva mapResultSetToReserva(ResultSet rs) throws SQLException {
+        // Como não temos dataHora e duracaoHoras no banco, usamos valores padrão
         Reserva reserva = new Reserva(
-                rs.getString("clienteNome"),
-                rs.getString("clienteTelefone"),
-                rs.getTimestamp("dataHora").toLocalDateTime(),
-                rs.getInt("duracaoHoras")
+                rs.getString("nome"),           // nome
+                rs.getString("telefone"),       // telefone
+                LocalDateTime.now(),            // dataHora padrão (hoje)
+                1                                // duracaoHoras padrão (1 hora)
         );
         reserva.setId(rs.getLong("id"));
-        reserva.setPrecoTotal(rs.getDouble("precoTotal"));
-        reserva.setStatus(Reserva.StatusReserva.valueOf(rs.getString("status")));
+        reserva.setPrecoTotal(rs.getDouble("valorTotal"));
+        reserva.setStatus(Reserva.StatusReserva.PENDENTE); // status padrão
         return reserva;
     }
 }
