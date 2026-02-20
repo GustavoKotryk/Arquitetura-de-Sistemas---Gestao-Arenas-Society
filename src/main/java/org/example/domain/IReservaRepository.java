@@ -1,19 +1,11 @@
 package org.example.domain;
 
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public interface IReservaRepository {
-
-    Reserva criarReserva(Reserva reserva)throws SQLException;
-
-    Reserva buscarPorId(int id) throws SQLException;
-
-    List<Reserva> buscarTodas() throws SQLException;
-
-    void atualizar(Reserva reserva) throws SQLException;
-
-    void deletar(int id) throws SQLException;
-
-
+    Reserva salvar(Reserva reserva);
+    Optional<Reserva> buscarPorId(Long id);
+    List<Reserva> listarTodas();
+    void remover(Long id);
 }

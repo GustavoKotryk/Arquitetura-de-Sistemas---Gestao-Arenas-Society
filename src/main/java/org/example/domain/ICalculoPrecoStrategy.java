@@ -1,5 +1,7 @@
 package org.example.domain;
 
-public interface ICalculoPrecoStrategy {
+import java.time.LocalDateTime;
 
+public interface ICalculoPrecoStrategy {
+    double calcularPreco(LocalDateTime dataHora, int duracaoHoras);
 }
