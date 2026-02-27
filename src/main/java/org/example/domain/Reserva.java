@@ -11,7 +11,7 @@ public class Reserva {
     private double precoTotal;
     private StatusReserva status;
 
-    
+
     public Reserva() {}
 
     public Reserva(String clienteNome, String clienteTelefone,

@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>Main.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Main.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">org</span><span class="s2">.</span><span class="s1">example</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">controller</span><span class="s2">.</span><span class="s1">ArenaController</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">controller</span><span class="s2">.</span><span class="s1">ReservaController</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">infra</span><span class="s2">.</span><span class="s1">notifications</span><span class="s2">.</span><span class="s1">WhatsAppService</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">infra</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">MemoryArenaRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">infra</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">SqlReservaRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">infra</span><span class="s2">.</span><span class="s1">strategies</span><span class="s2">.</span><span class="s1">PrecoDiaComumStrategy</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">infra</span><span class="s2">.</span><span class="s1">strategies</span><span class="s2">.</span><span class="s1">PrecoHorarioPicoStrategy</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">ArenaService</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">ReservaService</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">view</span><span class="s2">.</span><span class="s1">ReservaView</span><span class="s2">;</span>
+
+<span class="s3">/**</span>
+ <span class="s3">* Ponto de entrada — responsável pelo wiring (composição de dependências).</span>
+ <span class="s3">*</span>
+ <span class="s3">* Fluxo MVC completo:</span>
+ <span class="s3">*   Main (wiring)</span>
+ <span class="s3">*     → View recebe Controllers</span>
+ <span class="s3">*     → Controllers recebem Services</span>
+ <span class="s3">*     → Services recebem Repositories + Strategies + Notificações</span>
+ <span class="s3">*</span>
+ <span class="s3">* Para trocar banco de dados: substitua SqlReservaRepository por outra implementação de IReservaRepository.</span>
+ <span class="s3">* Para trocar notificação: substitua WhatsAppService por outra implementação de INotificacaoService.</span>
+ <span class="s3">* Para trocar estratégia de preço: injete outra implementação de ICalculoPrecoStrategy.</span>
+ <span class="s3">*/</span>
+<span class="s0">public class </span><span class="s1">Main </span><span class="s2">{</span>
+    <span class="s0">public static void </span><span class="s1">main</span><span class="s2">(</span><span class="s1">String</span><span class="s2">[] </span><span class="s1">args</span><span class="s2">) {</span>
+
+        <span class="s4">// --- Infraestrutura ---</span>
+        <span class="s1">var reservaRepository </span><span class="s2">= </span><span class="s0">new </span><span class="s1">SqlReservaRepository</span><span class="s2">();       </span><span class="s4">// troque por MemoryReservaRepository para testes</span>
+        <span class="s1">var arenaRepository   </span><span class="s2">= </span><span class="s0">new </span><span class="s1">MemoryArenaRepository</span><span class="s2">();</span>
+        <span class="s1">var notificacao       </span><span class="s2">= </span><span class="s0">new </span><span class="s1">WhatsAppService</span><span class="s2">();</span>
+        <span class="s1">var precoDiaComum     </span><span class="s2">= </span><span class="s0">new </span><span class="s1">PrecoDiaComumStrategy</span><span class="s2">();</span>
+        <span class="s1">var precoHorarioPico  </span><span class="s2">= </span><span class="s0">new </span><span class="s1">PrecoHorarioPicoStrategy</span><span class="s2">();</span>
+
+        <span class="s4">// --- Services ---</span>
+        <span class="s1">var reservaService </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ReservaService</span><span class="s2">(</span><span class="s1">reservaRepository</span><span class="s2">, </span><span class="s1">notificacao</span><span class="s2">, </span><span class="s1">precoDiaComum</span><span class="s2">, </span><span class="s1">precoHorarioPico</span><span class="s2">);</span>
+        <span class="s1">var arenaService   </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArenaService</span><span class="s2">(</span><span class="s1">arenaRepository</span><span class="s2">);</span>
+
+        <span class="s4">// --- Controllers ---</span>
+        <span class="s1">var reservaController </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ReservaController</span><span class="s2">(</span><span class="s1">reservaService</span><span class="s2">);</span>
+        <span class="s1">var arenaController   </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArenaController</span><span class="s2">(</span><span class="s1">arenaService</span><span class="s2">);</span>
+
+        <span class="s4">// --- View ---</span>
+        <span class="s1">var view </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ReservaView</span><span class="s2">(</span><span class="s1">reservaController</span><span class="s2">, </span><span class="s1">arenaController</span><span class="s2">);</span>
+        <span class="s1">view</span><span class="s2">.</span><span class="s1">iniciar</span><span class="s2">();</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

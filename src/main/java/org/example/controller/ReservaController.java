@@ -4,6 +4,7 @@ import org.example.domain.Arena;
 import org.example.domain.Reserva;
 import org.example.service.ReservaService;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,9 +35,12 @@ public class ReservaController {
     }
 
     public String agendarReserva(Long arenaId, String nome, String telefone,
-                                 LocalDateTime dataHora, int duracaoHoras) {
+                                 LocalDateTime dataHora, int duracaoHoras) throws SQLException {
+
+
         try {
             // Valida que a arena existe antes de delegar ao service
+            reservaService.validarDataPassado(dataHora);
             buscarArena(arenaId);
             Reserva salva = reservaService.criarReserva(nome, telefone, dataHora, duracaoHoras);
             return "Reserva criada com sucesso! ID: " + salva.getId()

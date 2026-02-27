@@ -53,6 +53,14 @@ public class ReservaService {
         }
     }
 
+
+    public void validarDataPassado(LocalDateTime dataHora)throws SQLException{
+        if (dataHora.isBefore(LocalDateTime.now())){
+            throw new IllegalArgumentException("Data inválida: não é possível agendar para uma data/hora no passado.\n" +
+                    "Informe uma data a partir de "+ LocalDateTime.now());
+        }
+    }
+
     public void cancelarReserva(Long id) {
         try {
             repository.buscarPorId(id).ifPresentOrElse(
