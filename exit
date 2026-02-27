@@ -1,0 +1,77 @@
+[33mcommit 6c9b896c9fcbe421d702f6c6c31bc17788d5aecb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: kotryk <gustavokotryk@gmail.com>
+Date:   Fri Feb 20 13:02:35 2026 -0300
+
+    Deu Red
+
+[33mcommit a4abe12328975ad0f5556bbd9f1968010f1f4438[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: matheus engel <matheusengelfl@gmail.com>
+Date:   Thu Feb 19 19:24:05 2026 -0300
+
+    feat: implementa a conexão com o banco, cria o controller e faz teste com a main
+
+[33mcommit da604bcad2478a4381bb6c7946e494d1e63b7e76[m
+Author: matheus engel <matheusengelfl@gmail.com>
+Date:   Thu Feb 19 18:35:33 2026 -0300
+
+    feat: implementa CRUD básico em ReservaServiceImpl e integração com SqlReservaRepository
+
+[33mcommit a5e4c16c53a7f774989faffba614dcfdff88b13f[m
+Author: matheus engel <matheusengelfl@gmail.com>
+Date:   Thu Feb 19 18:26:52 2026 -0300
+
+    feat: cria os métodos no repository
+
+[33mcommit acba4a461b34ac1a289eab709e101dc5eb186825[m
+Author: matheus engel <matheusengelfl@gmail.com>
+Date:   Wed Feb 18 15:34:06 2026 -0300
+
+    git commit -m "fix: adiciona implementação do repository e corrige SQL"
+
+[33mcommit 19167a15c3741d9468dff3d5090e376fc1d55c5f[m
+Author: matheus engel <matheusengelfl@gmail.com>
+Date:   Tue Feb 17 21:42:04 2026 -0300
+
+    removendo credenciais fake
+
+[33mcommit ab9139cab4752f1aa54de159bc08d5916b00b2db[m
+Author: matheus engel <matheusengelfl@gmail.com>
+Date:   Tue Feb 17 21:29:14 2026 -0300
+
+    adiciona métodos principais para reservas
+
+[33mcommit 70b7a80f6c6b8067d515d30e34ccd0a839760638[m
+Author: matheus engel <matheusengelfl@gmail.com>
+Date:   Mon Feb 16 20:45:22 2026 -0300
+
+    adiciona a classe de conexão com o banco de dados e cria o model
+
+[33mcommit 4a0b9caf04cd814d107bb93afaa84076d68f318a[m
+Author: matheus engel <matheusengelfl@gmail.com>
+Date:   Fri Feb 13 21:23:41 2026 -0300
+
+    refactor: altera a estrutura e adiciona MVC
+
+[33mcommit b1940a71ac2f87d854f5aab6749b3bcf5e829015[m
+Author: matheus engel <matheusengelfl@gmail.com>
+Date:   Fri Feb 13 16:51:31 2026 -0300
+
+    chore: ajuste de configurações da IDE.
+
+[33mcommit f9bdbdb611b3e385e2dd235a12e936423edeebbf[m
+Author: matheus engel <matheusengelfl@gmail.com>
+Date:   Fri Feb 13 16:49:51 2026 -0300
+
+    feat: continua
+
+[33mcommit 9489fe0340cd18d7f3ef3aac582c0fecf17b5482[m
+Author: matheus engel <matheusengelfl@gmail.com>
+Date:   Fri Feb 13 15:45:49 2026 -0300
+
+    feat: estrutura do projeto
+
+[33mcommit 5c8c09f6e0ea82905075f16636d02f40d362a8f9[m
+Author: Kotry <148113568+GustavoKotryk@users.noreply.github.com>
+Date:   Fri Feb 13 15:06:17 2026 -0300
+
+    Initial commit

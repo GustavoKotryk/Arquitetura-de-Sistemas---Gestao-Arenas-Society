@@ -1,9 +1,10 @@
 package org.example.view;
 
 public enum MenuOpcao {
-    LISTAR(1, "Listar todas as reservas"),
-    BUSCAR(2, "Buscar reserva por ID"),
-    SAIR(3, "Sair");
+    LISTAR_ARENAS(1,   "Listar arenas disponíveis"),
+    AGENDAR(2,         "Agendar reserva"),
+    LISTAR_RESERVAS(3, "Listar todas as reservas"),
+    SAIR(4,            "Sair");
 
     private final int codigo;
     private final String descricao;
@@ -13,19 +14,12 @@ public enum MenuOpcao {
         this.descricao = descricao;
     }
 
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
+    public int getCodigo() { return codigo; }
+    public String getDescricao() { return descricao; }
 
     public static MenuOpcao fromCodigo(int codigo) {
         for (MenuOpcao opcao : values()) {
-            if (opcao.codigo == codigo) {
-                return opcao;
-            }
+            if (opcao.codigo == codigo) return opcao;
         }
         return null;
     }
