@@ -20,7 +20,6 @@ class SistemaReservaArena {
         }
 
         System.out.println("Email enviado para " + nomeCliente);
-        System.out.println("Salvo no banco de dados (Simulado)");
     }
 }
 
