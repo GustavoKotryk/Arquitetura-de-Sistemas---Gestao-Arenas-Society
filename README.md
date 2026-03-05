@@ -10,12 +10,6 @@ Este projeto é um sistema de gestão destinado à administração de arenas esp
 - Cadastro e Gerenciamento de Usuários
 - Relatórios Estatísticos
 
-## Stack Tecnológica
-- **Frontend:** React, Redux
-- **Backend:** Node.js, Express
-- **Banco de Dados:** MongoDB
-- **Autenticação:** JWT
-- **Hospedagem:** Heroku
 
 ## Como Começar
 1. Clone o repositório:
