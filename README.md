@@ -41,6 +41,14 @@ Arquitetura-de-Sistemas---Gestao-Arenas-Society/
 └── README.md       # Documentação do projeto
 ```
 
+## Contribuidores
+Agradecemos aos seguintes contribuidores por suas contribuições ao projeto:
+
+| Contribuidor | Contribuições |
+|---|---|
+| [GustavoKotryk](https://github.com/GustavoKotryk) | 14 |
+| [matheusengell](https://github.com/matheusengell) | 14 |
+
 ## Contribuições
 Se você deseja contribuir, sinta-se à vontade para abrir um Pull Request ou um Issue. Ficaremos felizes em revisar suas contribuições!  
 
