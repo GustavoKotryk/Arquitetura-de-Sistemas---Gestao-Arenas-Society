@@ -38,11 +38,11 @@ public class Main {
 
         System.out.println("=== TESTE DE ARQUITETURA (MODO CAOS) ===");
         System.out.println("1 - Testar Reserva Comum");
-        System.out.println("2 - Testar Reserva VIP (Quebra de LSP)");
+        System.out.println("2 - Testar Reserva VIP ");
         System.out.print("Escolha: ");
 
         int escolha = scanner.nextInt();
-        scanner.nextLine(); // Limpa o buffer
+        scanner.nextLine();
 
         if (escolha == 1) {
             SistemaReservaArena sistema = new SistemaReservaArena();
